@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#312e81"><title>MathQuest SMP</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--p:#312e81;--v:#6366f1;--pink:#ec4899;--yellow:#facc15;--ink:#1e1b4b;--muted:#64748b}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;color:var(--ink);background:linear-gradient(135deg,#e0e7ff,#fce7f3 55%,#fef3c7);min-height:100vh}
+button{font:inherit;cursor:pointer;border:0}.wrap{max-width:1000px;margin:auto;padding:18px}
+header,.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.brand{font-weight:1000;color:var(--p);display:flex;align-items:center;gap:10px}.logo{background:linear-gradient(140deg,#4338ca,#db2777);color:white;padding:10px;border-radius:15px;font-size:25px}
+.status{background:white;border:1px solid #c7d2fe;border-radius:99px;padding:8px 12px;font-weight:800;font-size:.85rem}
+.hero{margin-top:16px;background:linear-gradient(115deg,#312e81,#6366f1 65%,#db2777);color:white;padding:26px;border-radius:25px;box-shadow:0 12px 25px #312e8130}.hero h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.04;margin:9px 0}.hero p{max-width:650px;color:#e0e7ff;line-height:1.5}.eyebrow{font-size:.75rem;font-weight:900;letter-spacing:.12em;color:#fde68a}
+.btn{background:var(--yellow);color:#422006;padding:12px 18px;border-radius:14px;font-weight:900;box-shadow:0 4px 0 #ca8a04}.btn.alt{background:#e0e7ff;color:#312e81;box-shadow:none}
+.panel{background:#ffffffed;border:2px solid #c7d2fe;border-radius:20px;padding:17px;margin-top:14px;box-shadow:0 6px 18px #312e8110}h2{color:var(--p);margin:0 0 10px}.small{color:var(--muted);font-size:.9rem;line-height:1.55}
+.team{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.member{background:#eef2ff;padding:10px;border-radius:11px;font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.objectives{padding-left:22px;line-height:1.65}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.stat{text-align:center;background:white;border:2px solid #c7d2fe;border-radius:15px;padding:11px}.stat b{display:block;color:var(--p);font-size:1.35rem}.stat span{font-size:.78rem;color:var(--muted)}
+.worlds{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.world{background:white;border:2px solid #c7d2fe;border-radius:18px;padding:15px;text-align:left;box-shadow:0 5px 15px #312e8110}.world:disabled{opacity:.5;cursor:not-allowed}.world .emoji{font-size:35px}.world strong{display:block;color:var(--p);margin:5px 0}.world small{color:var(--muted)}.tag{float:right;font-size:.72rem;font-weight:900;color:#4338ca}
+.hidden{display:none!important}.screen{margin-top:15px}.back{background:white;border:1px solid #c7d2fe;color:var(--p);padding:9px 12px;border-radius:11px;font-weight:800}
+.progress{height:12px;background:#e0e7ff;border-radius:99px;overflow:hidden;margin:14px 0}.progress div{height:100%;background:linear-gradient(90deg,#22c55e,#84cc16);width:0}
+.question{text-align:center;font-size:clamp(1.7rem,6vw,2.7rem);font-weight:1000;color:var(--p);padding:22px 0}.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.answer{padding:15px;background:#eef2ff;border:2px solid #a5b4fc;border-radius:14px;font-weight:900;font-size:1.15rem;color:#312e81}.answer.correct{background:#dcfce7;border-color:#22c55e;color:#166534}.answer.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b}.feedback{text-align:center;min-height:48px;padding:12px;font-weight:800}.next{display:block;margin:auto}input{color:var(--ink)}.note{background:#fffbeb;border:1px solid #fcd34d;padding:12px;border-radius:13px;color:#854d0e;font-size:.88rem;line-height:1.5}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:22px}
+@media(max-width:650px){.wrap{padding:12px}.grid2,.worlds{grid-template-columns:1fr}.team{grid-template-columns:1fr 1fr}.hero{padding:21px}}
+
+.topic-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.topic-tab{background:#eef2ff;border:2px solid #c7d2fe;color:#312e81;padding:10px 13px;border-radius:12px;font-weight:850}
+.topic-tab.active{background:#312e81;border-color:#312e81;color:white}
+.topic-tab small{display:block;font-weight:600;opacity:.85;margin-top:3px}
+.topic-progress{height:10px;background:#e0e7ff;border-radius:99px;overflow:hidden;margin:10px 0}
+.topic-progress div{height:100%;background:linear-gradient(90deg,#22c55e,#84cc16);width:0}
+.leader-columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.leader-box{background:#f8fafc;border:1px solid #c7d2fe;border-radius:14px;padding:12px;min-width:0}
+.leader-box h3{margin:0 0 8px;color:#312e81;font-size:1rem}
+.admin-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.admin-actions button{padding:11px;border-radius:12px;font-weight:850;background:#eef2ff;color:#312e81;border:1px solid #c7d2fe}.admin-actions button.danger{background:#fee2e2;color:#991b1b;border-color:#fecaca}.admin-login{display:flex;gap:8px;flex-wrap:wrap}.admin-login input{flex:1;min-width:150px;padding:11px;border:1px solid #a5b4fc;border-radius:11px;font:inherit}
+@media(max-width:650px){.admin-actions{grid-template-columns:1fr}}
+@media(max-width:650px){.leader-columns{grid-template-columns:1fr}.topic-tab{flex:1 1 44%}}
+.main-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 8px;position:sticky;top:8px;z-index:20;background:#f8faffdd;padding:8px;border:1px solid #c7d2fe;border-radius:17px;backdrop-filter:blur(10px)}
+.nav-tab{padding:11px 8px;border-radius:12px;background:#fff;color:#312e81;border:1px solid #c7d2fe;font-weight:850;line-height:1.25}
+.nav-tab.active{background:#312e81;color:#fff;border-color:#312e81;box-shadow:0 4px 10px #312e8130}
+.nav-tab span{display:block;font-size:.75rem;font-weight:600;opacity:.85;margin-top:3px}
+.tab-page{margin-top:10px}.tab-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:16px 0 10px}
+@media(max-width:520px){.main-nav{grid-template-columns:repeat(2,1fr);position:static}.nav-tab{padding:10px 6px}}
+
+</style></head><body><div class="wrap">
+<header><div class="brand"><div class="logo" id="adminSecretLogo" title="MathQuest">🧭</div> MATHQUEST SMP</div><div class="status" id="net">● Memeriksa koneksi</div></header>
+<nav class="main-nav" id="mainNav" aria-label="Navigasi utama">
+  <button class="nav-tab active" data-tab="home" onclick="switchTab('home')">🏠 Halaman Awal<span>Informasi & identitas</span></button>
+  <button class="nav-tab" data-tab="tab-map" onclick="switchTab('tab-map')">🗺️ Peta Petualangan<span>Pilih dunia soal</span></button>
+  <button class="nav-tab" data-tab="tab-leaderboard" onclick="switchTab('tab-leaderboard')">🏆 Leaderboard<span>Peringkat & progres</span></button>
+</nav>
+<main id="home" class="tab-page">
+<section class="hero"><div class="eyebrow">MEDIA PEMBELAJARAN DIGITAL</div><h1>Jelajahi Dunia<br>Matematika SMP! 🚀</h1><p>Uji kemampuanmu dalam bilangan bulat, pecahan, perbandingan, dan aljabar. Selesaikan tantangan, kumpulkan bintang, dan buka dunia berikutnya!</p><button class="btn" onclick="document.getElementById('studentName').focus();document.getElementById('studentName').scrollIntoView({behavior:'smooth',block:'center'})">Mulai Petualangan →</button></section>
+<section class="panel"><h2>👤 Identitas Siswa</h2><p class="small">Masukkan identitas sebelum memulai agar hasilmu tercatat pada papan peringkat bersama.</p><div class="grid2"><label>Nama siswa<input id="studentName" type="text" placeholder="Masukkan nama" style="display:block;width:100%;padding:12px;margin-top:6px;border:1px solid #a5b4fc;border-radius:11px;font:inherit"></label><label>Kelas<input id="studentClass" type="text" placeholder="Contoh: VII A" style="display:block;width:100%;padding:12px;margin-top:6px;border:1px solid #a5b4fc;border-radius:11px;font:inherit"></label></div><p class="small" id="profileStatus">Isi nama dan kelas untuk mulai bermain.</p><button class="btn alt" onclick="saveProfile()">Simpan Identitas</button></section>
+<section class="panel"><h2>🎯 Tujuan Pembelajaran</h2><p class="small">Setelah menggunakan MathQuest, peserta didik SMP diharapkan mampu:</p><ol class="objectives"><li>Melakukan operasi penjumlahan, pengurangan, perkalian, dan pembagian bilangan bulat dengan tepat.</li><li>Menyelesaikan operasi hitung pecahan sederhana.</li><li>Memahami dan menyelesaikan masalah perbandingan dan skala sederhana.</li><li>Mengenali variabel serta menyederhanakan bentuk aljabar dasar.</li><li>Mengembangkan penalaran, ketelitian, kemandirian, dan rasa percaya diri melalui latihan interaktif.</li></ol></section>
+<section class="panel"><h2>📘 Petunjuk Penggunaan</h2><div class="grid2"><div><b>Untuk Guru</b><ol class="small"><li>Jelaskan tujuan dan materi yang akan dipelajari.</li><li>Pilih dunia sesuai topik pembelajaran.</li><li>Arahkan siswa menjawab soal secara mandiri atau berkelompok.</li><li>Gunakan umpan balik dan skor sebagai bahan diskusi/evaluasi.</li><li>Untuk PWA offline, buka aplikasi melalui HTTPS saat online terlebih dahulu.</li></ol></div><div><b>Untuk Siswa</b><ol class="small"><li>Tekan “Mulai Petualangan”.</li><li>Pilih dunia yang tersedia.</li><li>Baca soal dan pilih satu jawaban.</li><li>Perhatikan umpan balik, lalu tekan “Lanjut”.</li><li>Selesaikan 10 soal untuk memperoleh bintang.</li></ol></div></div></section>
+<section class="panel"><h2>🌐 Penggunaan dan Pengujian Online–Offline</h2><p class="small"><b>Online:</b> akses melalui tautan website. <b>Offline:</b> buka file yang sudah diunduh; untuk PWA, akses melalui HTTPS sekali saat online agar file tersimpan.</p><div class="note"><b>Langkah pengujian:</b> (1) buka saat internet aktif dan pastikan status ONLINE; (2) mainkan soal; (3) aktifkan mode pesawat; (4) buka kembali aplikasi yang sudah tersimpan; (5) pastikan materi, soal, pilihan jawaban, skor, dan progres tetap berfungsi. Isi hasil uji berdasarkan percobaan nyata.</div></section>
+
+
+<div class="stats"><div class="stat"><b id="stars">0 ⭐</b><span>Bintang</span></div><div class="stat"><b id="done">0/4</b><span>Dunia selesai</span></div><div class="stat"><b id="correct">0</b><span>Jawaban benar</span></div></div>
+</main>
+<section id="tab-map" class="tab-page hidden">
+  <div class="tab-heading"><h2>🗺️ Peta Petualangan</h2><span class="small">10 soal setiap dunia</span></div>
+  <div class="worlds" id="worlds"></div>
+</section>
+<section id="tab-leaderboard" class="tab-page hidden">
+<section class="panel" id="topicPanel">
+  <div class="topline"><h2 id="topicTitle">📚 Progres Tiap Bagian</h2><span class="small" id="topicStatus">Pilih tab bagian soal</span></div>
+  <div class="topic-tabs" id="topicTabs" aria-label="Pilih bagian soal"></div>
+  <div class="topic-progress"><div id="topicProgressBar"></div></div>
+  <p class="small" id="topicProgressText">Pilih salah satu bagian untuk melihat progres pengerjaan.</p>
+  <div class="leader-columns">
+    <div class="leader-box"><h3>🏅 Leaderboard Online</h3><div id="topicOnlineBoard" class="small">Memuat peringkat...</div></div>
+    <div class="leader-box"><h3>💻 Leaderboard Lokal</h3><div id="topicLocalBoard" class="small">Belum ada hasil di perangkat ini.</div></div>
+  </div>
+</section>
+
+</section>
+<section id="tab-admin" class="tab-page hidden">
+<section class="panel" id="adminPanel">
+  <div class="topline"><h2>🛠️ Pengelola Data</h2><span class="small">Akses khusus guru / administrator</span></div>
+  <p class="small">Gunakan menu ini untuk membersihkan progres dan hasil permainan. Penghapusan data online akan memengaruhi semua perangkat.</p>
+  <div id="adminLoginArea" class="admin-login">
+    <input id="adminPin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Masukkan PIN pengelola" aria-label="PIN pengelola">
+    <button class="btn alt" onclick="adminLogin()">Buka Pengelola</button>
+  </div>
+  <div id="adminTools" class="hidden">
+    <div class="note"><b>Perhatian:</b> penghapusan data online berlaku untuk seluruh pengguna MathQuest dan tidak dapat dibatalkan.</div>
+    <div class="admin-actions">
+      <button onclick="resetLocalProgress()">🔄 Reset Progres Lokal</button>
+      <button class="danger" onclick="clearLeaderboards()">🗑️ Hapus Hasil Leaderboard</button>
+      <button class="danger" onclick="resetAllData()">⚠️ Reset Semua Data</button>
+    </div>
+    <p class="small" id="adminStatus" role="status">Akses pengelola terbuka.</p>
+    <button class="back" onclick="adminLogout()">Kunci Pengelola</button>
+  </div>
+</section>
+
+</section>
+<section id="game" class="screen hidden"><div class="topline"><button class="back" onclick="goHome()">← Beranda</button><b id="worldName"></b><span class="status" id="count">1/10</span></div><div class="progress"><div id="bar"></div></div><div class="panel"><div class="eyebrow" style="color:#6366f1;text-align:center">TANTANGAN MATEMATIKA</div><div class="question" id="question"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><button class="btn next hidden" id="next" onclick="nextQuestion()">Lanjut →</button></div></section>
+<section id="finish" class="screen hidden"><div class="panel" style="text-align:center;padding:25px"><div style="font-size:60px" id="medal">🏆</div><h2 id="finishTitle">Hebat!</h2><p id="finishText"></p><button class="btn" onclick="goHome()">Kembali ke Peta</button></div></section>
+<footer>MathQuest SMP • Media Pembelajaran Matematika</footer>
+</div>
+<script>
+const worlds=[
+{name:"Pulau Bilangan Bulat",emoji:"🌋",desc:"Operasi bilangan positif dan negatif",qs:[["−8 + 13",5],["−7 − 6",-13],["12 − 19",-7],["−4 × 6",-24],["−36 ÷ 9",-4],["15 + (−22)",-7],["−5 × (−8)",40],["48 ÷ (−6)",-8],["−12 + 7 − 3",-8],["−3 × 4 + 20",8]]},
+{name:"Lembah Pecahan",emoji:"🍰",desc:"Penjumlahan, pengurangan, perkalian, pembagian pecahan",qs:[["1/2 + 1/4","3/4"],["3/4 − 1/4","1/2"],["2/3 + 1/6","5/6"],["3/5 × 2/3","2/5"],["1/2 ÷ 1/4",2],["5/6 − 1/3","1/2"],["2/5 + 1/5","3/5"],["3/4 × 4/9","1/3"],["2/3 ÷ 4/3","1/2"],["1 1/2 + 1/2",2]]},
+{name:"Kota Perbandingan",emoji:"🏙️",desc:"Rasio, perbandingan senilai, dan skala",qs:[["Rasio 6 : 9 disederhanakan menjadi?","2 : 3"],["Jika 2 buku seharga Rp10.000, 4 buku seharga?","Rp20.000"],["Perbandingan 3 : 5, jumlah bagian 24. Bagian pertama?","9"],["Skala 1 : 100.000, jarak peta 2 cm. Jarak sebenarnya?","2 km"],["4 pekerja menyelesaikan tugas 6 hari. Dengan kemampuan sama, 8 pekerja perlu?","3 hari"],["Rasio 12 : 18 disederhanakan menjadi?","2 : 3"],["Harga 3 pensil Rp6.000. Harga 5 pensil?","Rp10.000"],["Pada peta skala 1 : 50.000, 4 cm mewakili?","2 km"],["Perbandingan 2 : 3 dengan jumlah 25. Nilai bagian kedua?","15"],["6 kg beras cukup untuk 3 keluarga. Untuk 5 keluarga perlu?","10 kg"]]},
+{name:"Benteng Aljabar",emoji:"🏰",desc:"Variabel dan bentuk aljabar dasar",qs:[["Jika x + 7 = 15, nilai x?","8"],["Jika 3a = 21, nilai a?","7"],["Sederhanakan 2x + 3x","5x"],["Jika y − 9 = 4, nilai y?","13"],["Sederhanakan 7p − 2p + p","6p"],["Jika 2x + 4 = 14, nilai x?","5"],["Hasil dari 3(a + 2)","3a + 6"],["Jika 5m = 40, nilai m?","8"],["Sederhanakan 4x + 2 − x","3x + 2"],["Jika 2y − 6 = 10, nilai y?","8"]]}
+];
+let state=JSON.parse(localStorage.getItem("mathquest-smp")||'{"done":[],"stars":0,"correct":0}');
+let wi=0,qi=0,score=0,locked=false,startedAt=0,selectedWorldTab=0;
+const localResultsKey="mathquest-local-results-v1";
+const profileKey="mathquest-profile";
+let profile=JSON.parse(localStorage.getItem(profileKey)||"{}");
+// Isi databaseURL dan apiKey sesuai proyek Firebase milik pengelola.
+const FIREBASE_CONFIG={databaseURL:"https://mathquest-smp-4e943-default-rtdb.asia-southeast1.firebasedatabase.app",apiKey:"AIzaSyAHtQzhytJNOqJjfDuTlSSCIa8fFrZ_jkk"};
+// Ganti PIN ini sebelum membagikan website. PIN di sisi browser hanya pengaman sederhana, bukan autentikasi aman.
+const ADMIN_PIN="2468";
+let adminUnlocked=false;
+function saveProfile(){const name=document.getElementById("studentName").value.trim(),klass=document.getElementById("studentClass").value.trim();if(!name||!klass){document.getElementById("profileStatus").textContent="Nama dan kelas wajib diisi.";return}profile={name,klass};localStorage.setItem(profileKey,JSON.stringify(profile));document.getElementById("profileStatus").textContent="Identitas tersimpan: "+name+" • "+klass;render()}
+function validConfig(){return FIREBASE_CONFIG.databaseURL.startsWith("https://")&&!FIREBASE_CONFIG.databaseURL.includes("GANTI-DENGAN")&&FIREBASE_CONFIG.apiKey!=="ISI_API_KEY"}
+async function sendResult(result){if(!validConfig())return;try{const url=FIREBASE_CONFIG.databaseURL.replace(/\/$/,"")+"/mathquest/results.json";const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(result)});if(!r.ok)throw Error("HTTP "+r.status)}catch(e){console.warn("Hasil belum terkirim ke Firebase:",e)}}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function adminLogin(){
+  const entered=document.getElementById("adminPin").value;
+  if(entered!==ADMIN_PIN){alert("PIN pengelola salah.");return}
+  adminUnlocked=true;document.getElementById("adminLoginArea").classList.add("hidden");
+  document.getElementById("adminTools").classList.remove("hidden");
+  document.getElementById("adminPin").value="";
+}
+function adminLogout(){adminUnlocked=false;document.getElementById("adminTools").classList.add("hidden");document.getElementById("adminLoginArea").classList.remove("hidden");document.getElementById("adminStatus").textContent="Akses pengelola terkunci."}
+function requireAdmin(){if(!adminUnlocked){alert("Buka akses pengelola terlebih dahulu.");return false}return true}
+function resetLocalProgress(){
+  if(!requireAdmin())return;
+  if(!confirm("Reset progres di perangkat ini? Identitas dan hasil leaderboard tetap disimpan."))return;
+  state={done:[],stars:0,correct:0,bestScores:{}};save();render();
+  document.getElementById("adminStatus").textContent="Progres lokal berhasil direset. Identitas dan hasil leaderboard tetap tersimpan.";
+}
+async function deleteOnlineResults(){
+  if(!validConfig())throw Error("Konfigurasi Firebase belum tersedia.");
+  const url=FIREBASE_CONFIG.databaseURL.replace(/\/$/,"")+"/mathquest/results.json";
+  const response=await fetch(url,{method:"DELETE"});
+  if(!response.ok)throw Error("Firebase menolak penghapusan (HTTP "+response.status+"). Periksa Database Rules.");
+}
+async function clearLeaderboards(){
+  if(!requireAdmin())return;
+  if(!confirm("Hapus SELURUH hasil leaderboard lokal dan online untuk semua bagian soal? Progres dan identitas tidak dihapus."))return;
+  const status=document.getElementById("adminStatus");status.textContent="Menghapus hasil leaderboard online...";
+  try{
+    await deleteOnlineResults();localStorage.removeItem(localResultsKey);render();
+    status.textContent="Hasil leaderboard lokal dan online berhasil dihapus.";
+  }catch(error){status.textContent="Gagal menghapus leaderboard online: "+error.message;alert(status.textContent)}
+}
+async function resetAllData(){
+  if(!requireAdmin())return;
+  if(!confirm("RESET SEMUA DATA? Ini menghapus progres, identitas, leaderboard lokal, dan seluruh hasil leaderboard online untuk semua pengguna. Tindakan ini tidak dapat dibatalkan."))return;
+  if(!confirm("Konfirmasi terakhir: lanjutkan penghapusan seluruh data MathQuest?"))return;
+  const status=document.getElementById("adminStatus");status.textContent="Menghapus seluruh data online...";
+  try{
+    await deleteOnlineResults();
+    localStorage.removeItem("mathquest-smp");localStorage.removeItem(profileKey);localStorage.removeItem(localResultsKey);
+    state={done:[],stars:0,correct:0,bestScores:{}};profile={};
+    document.getElementById("studentName").value="";document.getElementById("studentClass").value="";
+    document.getElementById("profileStatus").textContent="Isi nama dan kelas untuk mulai bermain.";
+    render();status.textContent="Semua data lokal dan online berhasil direset.";
+  }catch(error){status.textContent="Reset semua data gagal: "+error.message;alert(status.textContent)}
+}
+
+function save(){localStorage.setItem("mathquest-smp",JSON.stringify(state))}
+function getLocalResults(){try{return JSON.parse(localStorage.getItem(localResultsKey)||"[]")}catch(e){return []}}
+function saveLocalResult(result){const rows=getLocalResults();rows.push(result);localStorage.setItem(localResultsKey,JSON.stringify(rows.slice(-200)))}
+function renderTopicTabs(){
+  const host=document.getElementById("topicTabs");host.innerHTML="";
+  worlds.forEach((w,i)=>{
+    const completed=state.done.includes(i);
+    const b=document.createElement("button");
+    b.className="topic-tab"+(selectedWorldTab===i?" active":"");
+    b.innerHTML=`${w.emoji} ${w.name}<small>${completed?"✓ Selesai":"Belum selesai"}</small>`;
+    b.setAttribute("aria-pressed",selectedWorldTab===i?"true":"false");
+    b.onclick=()=>{selectedWorldTab=i;renderTopicTabs();renderTopicPanel()};
+    host.appendChild(b);
+  });
+}
+function renderTopicPanel(){
+  const i=selectedWorldTab,w=worlds[i],completed=state.done.includes(i);
+  document.getElementById("topicTitle").textContent=w.emoji+" "+w.name;
+  document.getElementById("topicStatus").textContent=completed?"✓ Bagian selesai":"Belum selesai";
+  document.getElementById("topicProgressBar").style.width=(completed?100:0)+"%";
+  document.getElementById("topicProgressText").textContent=completed
+    ?"10 dari 10 soal telah diselesaikan. Kamu bisa mengulang bagian ini untuk berlatih."
+    :"Bagian ini belum ditandai selesai. Selesaikan 10 soal untuk memperbarui progres.";
+  const local=getLocalResults().filter(x=>x.world===w.name)
+    .sort((a,b)=>(b.score-a.score)||(a.seconds-b.seconds)).slice(0,10);
+  document.getElementById("topicLocalBoard").innerHTML=local.length
+    ?local.map((x,n)=>`<div class="member" style="margin:6px 0">${n+1}. ${escapeHtml(x.name)} (${escapeHtml(x.klass)})<br><small>Benar: ${x.score}/10 • ${x.seconds} detik</small></div>`).join("")
+    :"Belum ada hasil untuk bagian ini di perangkat ini.";
+  loadTopicLeaderboard(i);
+}
+async function loadTopicLeaderboard(i){
+  const host=document.getElementById("topicOnlineBoard"),w=worlds[i];
+  if(!navigator.onLine){host.textContent="Leaderboard online memerlukan koneksi internet.";return}
+  if(!validConfig()){host.textContent="Database belum dikonfigurasi.";return}
+  host.textContent="Memuat peringkat...";
+  try{
+    const r=await fetch(FIREBASE_CONFIG.databaseURL.replace(/\/$/,"")+"/mathquest/results.json");
+    if(!r.ok)throw Error("HTTP "+r.status);
+    const data=await r.json()||{};
+    const rows=Object.values(data).filter(x=>x.world===w.name)
+      .sort((a,b)=>(b.score-a.score)||(a.seconds-b.seconds)).slice(0,10);
+    host.innerHTML=rows.length
+      ?rows.map((x,n)=>`<div class="member" style="margin:6px 0">${n+1}. ${escapeHtml(x.name)} (${escapeHtml(x.klass)})<br><small>Benar: ${x.score}/10 • ${x.seconds} detik</small></div>`).join("")
+      :"Belum ada hasil untuk bagian ini.";
+  }catch(e){host.textContent="Tidak dapat memuat peringkat. Periksa koneksi atau Firebase."}
+}
+function render(){
+  document.getElementById("stars").textContent=state.stars+" ⭐";
+  document.getElementById("done").textContent=state.done.length+"/4";
+  document.getElementById("correct").textContent=state.correct;
+  let host=document.getElementById("worlds");host.innerHTML="";
+  worlds.forEach((w,i)=>{
+    let unlocked=i===0||state.done.includes(i-1),b=document.createElement("button");
+    b.className="world";b.disabled=!unlocked;
+    b.innerHTML=`<span class="tag">${state.done.includes(i)?"✓ SELESAI":unlocked?"10 SOAL":"🔒"}</span><div class="emoji">${w.emoji}</div><strong>${w.name}</strong><small>${w.desc}</small>`;
+    b.onclick=()=>{selectedWorldTab=i;start(i)};
+    host.appendChild(b);
+  });
+  renderTopicTabs();renderTopicPanel();
+}
+let currentTab="home";
+let logoTapCount=0,logoTapTimer=null;
+function revealAdmin(){switchTab("tab-admin");}
+document.addEventListener("keydown",event=>{
+  if(event.ctrlKey && event.shiftKey && event.key.toLowerCase()==="a"){
+    event.preventDefault();revealAdmin();
+  }
+});
+document.getElementById("adminSecretLogo").addEventListener("click",()=>{
+  logoTapCount++;
+  clearTimeout(logoTapTimer);
+  logoTapTimer=setTimeout(()=>logoTapCount=0,1800);
+  if(logoTapCount>=5){logoTapCount=0;revealAdmin();}
+});
+function switchTab(tab){
+  currentTab=tab;
+  ["home","tab-map","tab-leaderboard","tab-admin"].forEach(id=>document.getElementById(id).classList.toggle("hidden",id!==tab));
+  document.querySelectorAll(".nav-tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  if(tab==="tab-leaderboard")renderTopicPanel();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function show(id){
+  const playing=id==="game"||id==="finish";
+  document.getElementById("mainNav").classList.toggle("hidden",playing);
+  ["home","tab-map","tab-leaderboard","tab-admin"].forEach(x=>document.getElementById(x).classList.toggle("hidden",playing||x!==currentTab));
+  ["game","finish"].forEach(x=>document.getElementById(x).classList.toggle("hidden",x!==id));
+}
+function start(i){if(!profile.name||!profile.klass){alert("Isi dan simpan nama serta kelas terlebih dahulu.");document.getElementById("studentName").focus();return}wi=i;qi=0;score=0;startedAt=Date.now();show("game");document.getElementById("worldName").textContent=worlds[i].name;draw()}
+function draw(){locked=false;let q=worlds[wi].qs[qi];document.getElementById("count").textContent=(qi+1)+"/10";document.getElementById("bar").style.width=(qi/10*100)+"%";document.getElementById("question").textContent=q[0];document.getElementById("feedback").textContent="Pilih jawaban yang benar!";document.getElementById("next").classList.add("hidden");let opts=new Set([String(q[1])]);let distractors=worlds[wi].qs.map(x=>String(x[1])).filter(x=>x!==String(q[1]));distractors.sort(()=>Math.random()-.5);for(let x of distractors){if(opts.size<4)opts.add(x)}while(opts.size<4)opts.add(String(Number(q[1])+opts.size+2));let arr=[...opts].sort(()=>Math.random()-.5),host=document.getElementById("answers");host.innerHTML="";arr.forEach(v=>{let b=document.createElement("button");b.className="answer";b.textContent=v;b.onclick=()=>check(b,v,String(q[1]));host.appendChild(b)})}
+function check(btn,v,c){if(locked)return;locked=true;if(v===c){score++;state.correct++;btn.classList.add("correct");document.getElementById("feedback").textContent="🎉 Tepat sekali!";}else{btn.classList.add("wrong");document.getElementById("feedback").textContent="Belum tepat. Jawaban benar: "+c;[...document.querySelectorAll(".answer")].forEach(b=>{if(b.textContent===c)b.classList.add("correct")})}document.querySelectorAll(".answer").forEach(b=>b.disabled=true);document.getElementById("next").classList.remove("hidden");save()}
+function nextQuestion(){if(qi<9){qi++;draw()}else finish()}
+function finish(){
+let elapsed=Math.max(1,Math.round((Date.now()-startedAt)/1000));
+const result={name:profile.name,klass:profile.klass,world:worlds[wi].name,score:score,seconds:elapsed,completedAt:Date.now()};
+saveLocalResult(result);sendResult(result);
+let stars=score>=9?3:score>=7?2:score>=5?1:0;
+state.bestScores=state.bestScores||{};
+const previous=state.bestScores[wi]??-1;
+if(score>previous){state.stars+=stars;state.bestScores[wi]=score;}
+if(!state.done.includes(wi))state.done.push(wi);
+save();document.getElementById("bar").style.width="100%";document.getElementById("medal").textContent=score>=9?"🏆":"🌟";document.getElementById("finishTitle").textContent=score>=7?"Luar biasa!":"Petualangan selesai!";document.getElementById("finishText").textContent=`Jawaban benar ${score}/10. Bintang yang diperoleh: ${stars}. ${wi<3?"Dunia berikutnya terbuka!":"Semua dunia telah ditaklukkan!"}`;show("finish");render()}
+function goHome(){switchTab("tab-map");show("home");render()}
+function net(){let e=document.getElementById("net");e.textContent=navigator.onLine?"● ONLINE":"● OFFLINE";e.style.color=navigator.onLine?"#15803d":"#b45309"}
+addEventListener("online",net);addEventListener("offline",net);if("serviceWorker"in navigator&&location.protocol.startsWith("http"))addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));net();if(profile.name)document.getElementById("studentName").value=profile.name;if(profile.klass)document.getElementById("studentClass").value=profile.klass;if(profile.name&&profile.klass)document.getElementById("profileStatus").textContent="Identitas tersimpan: "+profile.name+" • "+profile.klass;render();
+</script></body></html>

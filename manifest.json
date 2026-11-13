@@ -1,0 +1,10 @@
+{
+  "name": "MathQuest SMP",
+  "short_name": "MathQuest",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#e0e7ff",
+  "theme_color": "#312e81",
+  "lang": "id"
+}
